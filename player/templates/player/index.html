@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Le quizzzzzzz</title>
+    <style>
+        html {
+            width:100%;
+            height:100%;
+            padding:0;
+            margin:0;
+        }
+        body {
+            background: linear-gradient(0deg, rgba(6,0,105,1) 0%, rgba(4,4,80,1) 100%);
+            width:100%;
+            height:100%;
+            margin:0;
+            color: white;
+        }
+        #game_board {
+            width:100%;
+            height:90%;
+            text-align: center;
+            padding-top: 10%;
+        }
+        h1 {
+            margin-bottom: 5%;
+        }
+        button {
+            background: linear-gradient(355deg, rgba(105,50,0,1) 0%, rgba(135,92,0,1) 100%);
+            border: 1px solid orange;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        #nouvelle_question {
+            position: absolute;
+            bottom: 10%;
+            left: 25%;
+        }
+        #afficher_reponse {
+            position: absolute;
+            bottom: 10%;
+            right: 25%;
+        }
+    </style>
+</head>
+<body>
+<div id="game_board">
+    <h1 id="enonce"></h1>
+    <h2 id="reponse"></h2>
+    <button id="nouvelle_question" onclick="nouvelle_question()">Nouvelle question</button>
+    <button id="afficher_reponse" onclick="afficher_reponse()">Dévoiler la réponse</button>
+</div>
+<script>
+    var url = "{% url 'api_question' %}";
+    var reponse = document.getElementById("reponse");
+    var enonce = document.getElementById("enonce");
+
+    function nouvelle_question() {
+        reponse.style.display = "none";
+        fetch(url).then(function(response) {
+            return response.json()
+        }).then(function(jsonData) {
+            enonce.innerHTML = jsonData.enonce
+            reponse.innerHTML = jsonData.reponse
+        }).catch(function(err) {
+            console.log("Opps, Something went wrong!", err);
+        })
+    }
+
+    function afficher_reponse() {
+        reponse.style.display = "block";
+    }
+</script>
+</body>
+</html>
